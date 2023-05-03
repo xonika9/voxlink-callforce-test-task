@@ -126,22 +126,30 @@ const sleep500 = makeSleep('5', 500);
   });
 }
 
-{// TEST 2.4
-    // todo: Вызовите методы sleep100, sleep200 и sleep500, дождавшись выполнения каждого,
-    //  но так, чтобы методы не дожидались выполнения друг друга
-    async function sleepParallel() {
-        // Писать код здесь
-    }
+{
+  // TEST 2.4
+  // todo: Вызовите методы sleep100, sleep200 и sleep500, дождавшись выполнения каждого,
+  //  но так, чтобы методы не дожидались выполнения друг друга
+  async function sleepParallel() {
+    const sleepPromises = [sleep100(), sleep200(), sleep500()];
 
-    const start = Date.now();
+    const results = await Promise.all(sleepPromises);
+    return results.join('');
+  }
 
-    sleepParallel().then((orderString) => {
-        const timeSpent = Date.now() - start;
+  const start = Date.now();
 
-        assert.equal(timeSpent <= 800, true, "Test failed. Too slow");
-        assert.equal(typeof orderString, 'string', "Test failed. Result should be string");
-        assert.equal(orderString.length, 3, "Test failed. Not all methods done");
-    });
+  sleepParallel().then((orderString) => {
+    const timeSpent = Date.now() - start;
+
+    assert.equal(timeSpent <= 800, true, 'Test failed. Too slow');
+    assert.equal(
+      typeof orderString,
+      'string',
+      'Test failed. Result should be string'
+    );
+    assert.equal(orderString.length, 3, 'Test failed. Not all methods done');
+  });
 }
 
 /**
