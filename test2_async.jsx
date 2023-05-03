@@ -157,73 +157,84 @@ const sleep500 = makeSleep('5', 500);
  * @property {(err?: Error) => CancelableDeferred} cancel
  */
 
-{// TEST 2.5
-    let asyncFunctionExecutedTooLong_called = false;
-    let deferredCancel_called = false;
+{
+  // TEST 2.5
+  let asyncFunctionExecutedTooLong_called = false;
+  let deferredCancel_called = false;
 
-    /** @returns {CancelableDeferred} */
-    function asyncFunctionExecutedTooLong() {// Нельзя изменять содержимое этой функции.
-        /** @type {ReturnType<setTimeout>} */
-        let timer;
-        /** @type {CancelableDeferred} */
-        const deferred = new Deferred(resolve => {
-            asyncFunctionExecutedTooLong_called = true;
+  /** @returns {CancelableDeferred} */
+  function asyncFunctionExecutedTooLong() {
+    // Нельзя изменять содержимое этой функции.
+    /** @type {ReturnType<setTimeout>} */
+    let timer;
+    /** @type {CancelableDeferred} */
+    const deferred = new Deferred((resolve) => {
+      asyncFunctionExecutedTooLong_called = true;
 
-            timer = setTimeout(resolve, 0x240_c_840_0);
-        });
+      timer = setTimeout(resolve, 0x240_c_840_0);
+    });
 
-        deferred.cancel = function(err) {
-            deferredCancel_called = true;
+    deferred.cancel = function (err) {
+      deferredCancel_called = true;
 
-            if (timer) {
-                clearTimeout(timer);
-                timer = void 0;
-            }
+      if (timer) {
+        clearTimeout(timer);
+        timer = void 0;
+      }
 
-            deferred.reject(err);
+      deferred.reject(err);
 
-            return /** @type {CancelableDeferred} */deferred;
-        };
+      return /** @type {CancelableDeferred} */ deferred;
+    };
 
-        return deferred;
-    }
+    return deferred;
+  }
 
-    // todo: Предположим, что функция asyncFunctionExecutedTooLong может выполняться очень долго, но нам нужно всё
-    //  равно её выполниться. Нужно написать код, который вызовет функцию asyncFunctionExecutedTooLong и:
-    //   - либо дождётся выполнения асинхронной функции asyncFunctionExecutedTooLong
-    //   - либо завершится с ошибкой 'Timeout' через 2 секунды после начала работы
-    //  Если execWithTimeout завершается с ошибкой 'Timeout', то не забыть вызвать `cancel` у Deferred-объекта, который
-    //   возвращает функция asyncFunctionExecutedTooLong
-    function execWithTimeout() {
-        // Deferred is Promise-like object
-        const promiseLike = asyncFunctionExecutedTooLong();
-        const DEFAULT_TIMEOUT = 2000;
+  // todo: Предположим, что функция asyncFunctionExecutedTooLong может выполняться очень долго, но нам нужно всё
+  //  равно её выполниться. Нужно написать код, который вызовет функцию asyncFunctionExecutedTooLong и:
+  //   - либо дождётся выполнения асинхронной функции asyncFunctionExecutedTooLong
+  //   - либо завершится с ошибкой 'Timeout' через 2 секунды после начала работы
+  //  Если execWithTimeout завершается с ошибкой 'Timeout', то не забыть вызвать `cancel` у Deferred-объекта, который
+  //   возвращает функция asyncFunctionExecutedTooLong
 
-        // Писать код здесь
-    }
+  function execWithTimeout() {
+    const promiseLike = asyncFunctionExecutedTooLong();
+    const DEFAULT_TIMEOUT = 2000;
 
-    let errMessage;
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        promiseLike.cancel(new Error('Timeout'));
+        reject(new Error('Timeout'));
+      }, DEFAULT_TIMEOUT);
 
-    execWithTimeout()
-        .catch(err => {
-            errMessage = String(err.message || err);
-        })
-        .then(() => {
-            assert.equal(asyncFunctionExecutedTooLong_called, true, "Test failed");
-            assert.equal(deferredCancel_called, true, "Test failed");
-            assert.equal(errMessage, 'Timeout', "Test failed");
-        })
-    ;
+      promiseLike
+        .then(resolve)
+        .catch(reject)
+        .finally(() => clearTimeout(timeout));
+    });
+  }
+
+  let errMessage;
+
+  execWithTimeout()
+    .catch((err) => {
+      errMessage = String(err.message || err);
+    })
+    .then(() => {
+      assert.equal(asyncFunctionExecutedTooLong_called, true, 'Test failed');
+      assert.equal(deferredCancel_called, true, 'Test failed');
+      assert.equal(errMessage, 'Timeout', 'Test failed');
+    });
 }
 
 function makeSleep(returnValue, timeoutMs = 0) {
-    return function() {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve(returnValue);
-            }, timeoutMs);
-        });
-    };
+  return function () {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(returnValue);
+      }, timeoutMs);
+    });
+  };
 }
 
 /**
@@ -231,49 +242,50 @@ function makeSleep(returnValue, timeoutMs = 0) {
  * @returns {NodeJS.Global|Window}
  */
 function getGlobalContext() {
-    return ((typeof globalThis !== 'undefined' ? globalThis : void 0)
-        || (typeof global !== 'undefined' ? global : void 0)
-        || (typeof window !== 'undefined' ? window : void 0)
-        || this)
-    ;
+  return (
+    (typeof globalThis !== 'undefined' ? globalThis : void 0) ||
+    (typeof global !== 'undefined' ? global : void 0) ||
+    (typeof window !== 'undefined' ? window : void 0) ||
+    this
+  );
 }
 
 /**
  * @this {NodeJS.Global|Window}
  */
 function makeGlobalPromiseWithDefaultTimeout() {
-    const DEFAULT_TIMEOUT = 20000;
+  const DEFAULT_TIMEOUT = 20000;
 
-    class PromiseWithDefaultTimeout extends Promise {
-        constructor(executor) {
-            /** @type {(ReturnType<typeof setTimeout>)|undefined} */
-            let timer;
+  class PromiseWithDefaultTimeout extends Promise {
+    constructor(executor) {
+      /** @type {(ReturnType<typeof setTimeout>)|undefined} */
+      let timer;
 
-            super((resolve, reject) => {
-                const _clearTimeout = () => {
-                    if (timer) {
-                        clearTimeout(timer);
-                        timer = void 0;
-                    }
-                };
-                const _resolve = value => {
-                    _clearTimeout();
-                    resolve(value);
-                };
-                const _reject = error => {
-                    _clearTimeout();
-                    reject(error);
-                };
+      super((resolve, reject) => {
+        const _clearTimeout = () => {
+          if (timer) {
+            clearTimeout(timer);
+            timer = void 0;
+          }
+        };
+        const _resolve = (value) => {
+          _clearTimeout();
+          resolve(value);
+        };
+        const _reject = (error) => {
+          _clearTimeout();
+          reject(error);
+        };
 
-                timer = setTimeout(() => {
-                    timer = void 0;
-                    reject(new Error('Timeout'));
-                }, DEFAULT_TIMEOUT);
+        timer = setTimeout(() => {
+          timer = void 0;
+          reject(new Error('Timeout'));
+        }, DEFAULT_TIMEOUT);
 
-                return executor(_resolve, _reject);
-            });
-        }
+        return executor(_resolve, _reject);
+      });
     }
+  }
 
-    getGlobalContext.call(this).Promise = PromiseWithDefaultTimeout;
+  getGlobalContext.call(this).Promise = PromiseWithDefaultTimeout;
 }
