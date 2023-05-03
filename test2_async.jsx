@@ -2,24 +2,24 @@
 'use strict';
 
 class Deferred extends Promise {
-    constructor(executor) {
-        let res;
-        let rej;
-        super((resolve, reject) => {
-            res = resolve;
-            rej = reject;
-            if (typeof executor === 'function') {
-                return executor(resolve, reject);
-            }
-        });
-        this.resolve = (res || (() => { })).bind(this);
-        this.reject = (rej || (() => { })).bind(this);
-    }
+  constructor(executor) {
+    let res;
+    let rej;
+    super((resolve, reject) => {
+      res = resolve;
+      rej = reject;
+      if (typeof executor === 'function') {
+        return executor(resolve, reject);
+      }
+    });
+    this.resolve = (res || (() => {})).bind(this);
+    this.reject = (rej || (() => {})).bind(this);
+  }
 }
 
 makeGlobalPromiseWithDefaultTimeout.call(this);
 
-const assert = require("assert").strict;
+const assert = require('assert').strict;
 
 /** @returns {Promise<'1'>} */
 const sleep100 = makeSleep('1', 100);
@@ -28,22 +28,28 @@ const sleep200 = makeSleep('2', 200);
 /** @returns {Promise<'5'>} */
 const sleep500 = makeSleep('5', 500);
 
-{// TEST 2.1
-    // todo: Вызовите по очереди методы sleep500 -> sleep200 -> sleep100, дожидаясь выполнения каждого перед запуском следующего метода.
-    //  Обратите внимание, что sleepOneByOneAsyncAwaited должна, в результате, составить строковое значение.
-    //  !!! Для решения применить async/await-подход !!!
-    async function sleepOneByOneAsyncAwaited() {
-        // Писать код здесь
-    }
+{
+  // TEST 2.1
+  // todo: Вызовите по очереди методы sleep500 -> sleep200 -> sleep100, дожидаясь выполнения каждого перед запуском следующего метода.
+  //  Обратите внимание, что sleepOneByOneAsyncAwaited должна, в результате, составить строковое значение.
+  //  !!! Для решения применить async/await-подход !!!
 
-    const start = Date.now();
+  async function sleepOneByOneAsyncAwaited() {
+    let orderString = '';
+    orderString += await sleep500();
+    orderString += await sleep200();
+    orderString += await sleep100();
+    return orderString;
+  }
 
-    sleepOneByOneAsyncAwaited().then((orderString) => {
-        const timeSpent = Date.now() - start;
+  const start = Date.now();
 
-        assert.equal(timeSpent >= 800, true, "Test failed. Too fast");
-        assert.equal(orderString, "521", "Test failed. Wrong order");
-    });
+  sleepOneByOneAsyncAwaited().then((orderString) => {
+    const timeSpent = Date.now() - start;
+
+    assert.equal(timeSpent >= 800, true, 'Test failed. Too fast');
+    assert.equal(orderString, '521', 'Test failed. Wrong order');
+  });
 }
 
 {// TEST 2.2
