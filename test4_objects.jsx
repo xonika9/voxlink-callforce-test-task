@@ -381,38 +381,61 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.8
-    // todo: Написать функцию, которая будет возвращать новый объект с удаленными свойствами prop1 и prop2
-    //  !!! Написать решения БЕЗ использования деструктуризации !!!
-    //  !!! Запрещено создавать неиспользуемые переменные !!!
-    //  !!! Можно использовать оператор delete !!!
-    function createObjectWithoutProps1and2(inputObj) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.8
+  // todo: Написать функцию, которая будет возвращать новый объект с удаленными свойствами prop1 и prop2
+  //  !!! Написать решения БЕЗ использования деструктуризации !!!
+  //  !!! Запрещено создавать неиспользуемые переменные !!!
+  //  !!! Можно использовать оператор delete !!!
 
-    {
-        const inputObj = {
-            prop1: 111,
-            prop2: 222,
-            prop3: 333,
-            prop4: 444,
-            prop5: 555,
-        };
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строка ниже - исключение, ее менять не нужно)
-        const expectedInputObj = JSON.parse(JSON.stringify(inputObj));
-        const expectedResult = {
-            prop3: 333,
-            prop4: 444,
-            prop5: 555,
-        };
+  function createObjectWithoutProps1and2(inputObj) {
+    const newObj = Object.assign({}, inputObj);
+    delete newObj.prop1;
+    delete newObj.prop2;
+    return newObj;
+  }
 
-        const result = createObjectWithoutProps1and2(inputObj);
+  //   function createObjectWithoutProps1and2(inputObj) {
+  //     const outputObj = {};
+  //     for (let prop in inputObj) {
+  //       if (prop !== 'prop1' && prop !== 'prop2') {
+  //         outputObj[prop] = inputObj[prop];
+  //       }
+  //     }
+  //     return outputObj;
+  //   }
 
-        assert.notEqual(result, inputObj, "Test failed. Original object modified ");
-        assert.deepEqual(result, expectedResult, "Test failed. test() returned wrong object");
-        assert.deepEqual(inputObj, expectedInputObj, "Test failed. Original object modified ");
-    }
+  {
+    const inputObj = {
+      prop1: 111,
+      prop2: 222,
+      prop3: 333,
+      prop4: 444,
+      prop5: 555,
+    };
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строка ниже - исключение, ее менять не нужно)
+    const expectedInputObj = JSON.parse(JSON.stringify(inputObj));
+    const expectedResult = {
+      prop3: 333,
+      prop4: 444,
+      prop5: 555,
+    };
+
+    const result = createObjectWithoutProps1and2(inputObj);
+
+    assert.notEqual(result, inputObj, 'Test failed. Original object modified ');
+    assert.deepEqual(
+      result,
+      expectedResult,
+      'Test failed. test() returned wrong object'
+    );
+    assert.deepEqual(
+      inputObj,
+      expectedInputObj,
+      'Test failed. Original object modified '
+    );
+  }
 }
 
 {// TEST 4.9
