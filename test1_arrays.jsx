@@ -68,19 +68,55 @@ const assert = require("assert").strict;
   }
 }
 
-{// TEST 1.1.X - Дополнительный вопрос
-    // todo: Задача из "TEST 1.1" решается без использования рекурсии.
-    //  Попробуйте написать функцию, которая будет решать задачу из "TEST 1.1" используя один цикл for и
-    //   без использования рекурсии.
+{
+  // TEST 1.1.X - Дополнительный вопрос
+  // todo: Задача из "TEST 1.1" решается без использования рекурсии.
+  //  Попробуйте написать функцию, которая будет решать задачу из "TEST 1.1" используя один цикл for и
+  //   без использования рекурсии.
 
+  function decompressArr(inputArr) {
+    const result = [];
+    let id = 0;
+
+    while (id < inputArr.length) {
+      const element = inputArr[id];
+
+      if (Array.isArray(element)) {
+        inputArr.splice(id, 1, ...element);
+      } else {
+        result.push(element);
+        id++;
+      }
+    }
+
+    return result;
+  }
+
+  {
+    const result = decompressArr([[1, [2], 3], [4, 5], [6, [7], 8], 9]);
+    assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'Test failed');
+  }
+  {
+    const result = decompressArr([[1, 2], 3, [4], [5, 6, 7, 8], 9]);
+    assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'Test failed');
+  }
+  {
+    const result = decompressArr([1, [2, 3, 4], [5], 6, [7, 8, 9]]);
+    assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'Test failed');
+  }
+  {
+    const result = decompressArr([
+      [1, [2, 3], 4],
+      [5],
+      [6, [7, 8, `9,10`], 11],
+    ]);
+    assert.deepEqual(
+      result,
+      [1, 2, 3, 4, 5, 6, 7, 8, `9,10`, 11],
+      'Test failed'
+    );
+  }
 }
-
-{// TEST 1.2
-    // todo: Нужно создать ДВЕ переменных в функции sumSecondAndFourth, которые будут содержать в себе
-    //  значения второго и четвертого элементов массива, и вернуть сумму этих переменных
-    //  !!! Для решения воспользоваться деструктуризацией !!!
-    //  !!! Нельзя обращаться к массиву по индексам !!!
-    //  !!! Нельзя создавать переменные, которые не будут использоваться !!!
     function sumSecondAndFourth(arr) {
         // Писать код здесь
     }
