@@ -337,38 +337,48 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.7
-    // todo: Написать функцию, которая будет возвращать новый объект с удаленными свойствами prop1 и prop2
-    //  !!! Для решения воспользоваться возможностями ECMAScript2015+ !!!
-    //  !!! Запрещено создавать неиспользуемые переменные !!!
-    //  !!! Можно использовать оператор delete !!!
-    function createObjectWithoutProps1and2(inputObj) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.7
+  // todo: Написать функцию, которая будет возвращать новый объект с удаленными свойствами prop1 и prop2
+  //  !!! Для решения воспользоваться возможностями ECMAScript2015+ !!!
+  //  !!! Запрещено создавать неиспользуемые переменные !!!
+  //  !!! Можно использовать оператор delete !!!
+  function createObjectWithoutProps1and2(inputObj) {
+    const { prop1, prop2, ...rest } = inputObj;
+    return rest;
+  }
 
-    {
-        const inputObj = {
-            prop1: 111,
-            prop2: 222,
-            prop3: 333,
-            prop4: 444,
-            prop5: 555,
-        };
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строка ниже - исключение, ее менять не нужно)
-        const expectedInputObj = JSON.parse(JSON.stringify(inputObj));
-        const expectedResult = {
-            prop3: 333,
-            prop4: 444,
-            prop5: 555,
-        };
+  {
+    const inputObj = {
+      prop1: 111,
+      prop2: 222,
+      prop3: 333,
+      prop4: 444,
+      prop5: 555,
+    };
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строка ниже - исключение, ее менять не нужно)
+    const expectedInputObj = JSON.parse(JSON.stringify(inputObj));
+    const expectedResult = {
+      prop3: 333,
+      prop4: 444,
+      prop5: 555,
+    };
 
-        const result = createObjectWithoutProps1and2(inputObj);
+    const result = createObjectWithoutProps1and2(inputObj);
 
-        assert.notEqual(result, inputObj, "Test failed. Original object modified ");
-        assert.deepEqual(result, expectedResult, "Test failed. test() returned wrong object");
-        assert.deepEqual(inputObj, expectedInputObj, "Test failed. Original object modified ");
-    }
+    assert.notEqual(result, inputObj, 'Test failed. Original object modified ');
+    assert.deepEqual(
+      result,
+      expectedResult,
+      'Test failed. test() returned wrong object'
+    );
+    assert.deepEqual(
+      inputObj,
+      expectedInputObj,
+      'Test failed. Original object modified '
+    );
+  }
 }
 
 {// TEST 4.8
