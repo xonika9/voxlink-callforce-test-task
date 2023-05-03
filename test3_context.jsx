@@ -65,32 +65,39 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 3.3
-    const obj = {
-        prop: 123,
-    };
+{
+  // TEST 3.3
+  const obj = {
+    prop: 123,
+  };
 
-    const getter = function() {
-        return this.prop;
-    };
+  const getter = function () {
+    return this.prop;
+  };
 
-    // todo: Исправьте код ниже. Сделайте четырьмя разными способами передачу контекста в функцию getter()
-    //  При необходимости, объект obj разрешено изменять в процессе исполнения кода.
+  // todo: Исправьте код ниже. Сделайте четырьмя разными способами передачу контекста в функцию getter()
+  //  При необходимости, объект obj разрешено изменять в процессе исполнения кода.
 
-    { //todo: Способ 1
-        const result = getter();
-        assert.equal(result, 123, "Test failed");
-    }
-    { //todo: Способ 2
-        const result = getter();
-        assert.equal(result, 123, "Test failed");
-    }
-    { //todo: Способ 3
-        const result = getter();
-        assert.equal(result, 123, "Test failed");
-    }
-    { //todo: Способ 4
-        const result = getter();
-        assert.equal(result, 123, "Test failed");
-    }
+  {
+    // Способ 1. Использование .call()
+    const result = getter.call(obj);
+    assert.equal(result, 123, 'Test failed');
+  }
+  {
+    // Способ 2. Использование .apply()
+    const result = getter.apply(obj);
+    assert.equal(result, 123, 'Test failed');
+  }
+  {
+    // Способ 3. Использование .bind()
+    const boundGetter = getter.bind(obj);
+    const result = boundGetter();
+    assert.equal(result, 123, 'Test failed');
+  }
+  {
+    // Способ 4. Добавление getter к obj и вызов его напрямую
+    obj.getter = getter;
+    const result = obj.getter();
+    assert.equal(result, 123, 'Тест не пройден');
+  }
 }
