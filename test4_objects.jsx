@@ -133,61 +133,64 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.4
-    // todo: Дополните код для прохождения теста (получение копии объекта без свойств prop1 и prop2). Оператор delete использовать запрещено
-    //  !!! Для решения воспользоваться деструктуризацией !!!
-    function deleteProps1and2(obj) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.4
+  // todo: Дополните код для прохождения теста (получение копии объекта без свойств prop1 и prop2). Оператор delete использовать запрещено
+  //  !!! Для решения воспользоваться деструктуризацией !!!
 
-    {
-        /** Изначальный объект, передаваемый в deleteProps1and2() */
-        const obj = {
-            prop1: 111,
-            prop2: 222,
-            prop3: 333,
-            prop4: 444,
-            prop5: 555,
-        };
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строка ниже - исключение, ее менять не нужно)
-        const objCopy = JSON.parse(JSON.stringify(obj));
-        /** Итоговый объект, который мы должны получить в результате работы deleteProps1and2() */
-        const expectedResult = {
-            prop3: 333,
-            prop4: 444,
-            prop5: 555,
-        }
+  function deleteProps1and2(obj) {
+    const { prop1, prop2, ...rest } = obj;
+    return rest;
+  }
 
-        const result = deleteProps1and2(obj);
+  {
+    /** Изначальный объект, передаваемый в deleteProps1and2() */
+    const obj = {
+      prop1: 111,
+      prop2: 222,
+      prop3: 333,
+      prop4: 444,
+      prop5: 555,
+    };
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строка ниже - исключение, ее менять не нужно)
+    const objCopy = JSON.parse(JSON.stringify(obj));
+    /** Итоговый объект, который мы должны получить в результате работы deleteProps1and2() */
+    const expectedResult = {
+      prop3: 333,
+      prop4: 444,
+      prop5: 555,
+    };
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-        assert.deepEqual(obj, objCopy, "Test failed");
-        assert.notEqual(result, obj, "Test failed");
-    }
-    {
-        /** Изначальный объект, передаваемый в deleteProps1and2() */
-        const obj = {
-            prop1: 1,
-            customProp: true,
-            myProp: "42",
-            prop2: "22",
-        };
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строка ниже - исключение, ее менять не нужно)
-        const objCopy = JSON.parse(JSON.stringify(obj));
-        /** Итоговый объект, который мы должны получить в результате работы deleteProps1and2() */
-        const expectedResult = {
-            customProp: true,
-            myProp: "42",
-        }
+    const result = deleteProps1and2(obj);
 
-        const result = deleteProps1and2(obj);
+    assert.deepEqual(result, expectedResult, 'Test failed');
+    assert.deepEqual(obj, objCopy, 'Test failed');
+    assert.notEqual(result, obj, 'Test failed');
+  }
+  {
+    /** Изначальный объект, передаваемый в deleteProps1and2() */
+    const obj = {
+      prop1: 1,
+      customProp: true,
+      myProp: '42',
+      prop2: '22',
+    };
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строка ниже - исключение, ее менять не нужно)
+    const objCopy = JSON.parse(JSON.stringify(obj));
+    /** Итоговый объект, который мы должны получить в результате работы deleteProps1and2() */
+    const expectedResult = {
+      customProp: true,
+      myProp: '42',
+    };
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-        assert.deepEqual(obj, objCopy, "Test failed");
-        assert.notEqual(result, obj, "Test failed");
-    }
+    const result = deleteProps1and2(obj);
+
+    assert.deepEqual(result, expectedResult, 'Test failed');
+    assert.deepEqual(obj, objCopy, 'Test failed');
+    assert.notEqual(result, obj, 'Test failed');
+  }
 }
 
 {// TEST 4.5
