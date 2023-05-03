@@ -1,37 +1,38 @@
 // v1.2
 'use strict';
 
-const assert = require("assert").strict;
+const assert = require('assert').strict;
 
-{// TEST 3.1
-    // todo: Исправить функцию callGetter (изменения нужно вносить в класс Obj) таким образом, чтобы вызываемый внутри getter
-    //  возвращал значение obj.prop путем вызова obj.getProp
-    //  !!! Для решения задания воспользоваться стрелочной функцией !!!
-    function callGetter() {
-        class Obj {
-            prop = 123;
+{
+  // TEST 3.1
+  // todo: Исправить функцию callGetter (изменения нужно вносить в класс Obj) таким образом, чтобы вызываемый внутри getter
+  //  возвращал значение obj.prop путем вызова obj.getProp
+  //  !!! Для решения задания воспользоваться стрелочной функцией !!!
+  function callGetter() {
+    class Obj {
+      prop = 123;
 
-            getProp() {
-                return this.prop;
-            }
-        }
-        const obj = new Obj();
-        const getter = obj.getProp;
-
-        try {
-            assert.equal(typeof getter, 'function', "Test failed");
-
-            return getter();
-        }
-        catch {
-            return 0;
-        }
+      // Изменим метод getProp на стрелочную функцию
+      getProp = () => {
+        return this.prop;
+      };
     }
+    const obj = new Obj();
+    const getter = obj.getProp;
 
-    {
-        const result = callGetter();
-        assert.equal(result, 123, "Test failed");
+    try {
+      assert.equal(typeof getter, 'function', 'Test failed');
+
+      return getter();
+    } catch {
+      return 0;
     }
+  }
+
+  {
+    const result = callGetter();
+    assert.equal(result, 123, 'Test failed');
+  }
 }
 
 {// TEST 3.2
