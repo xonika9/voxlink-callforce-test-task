@@ -193,74 +193,76 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.5
-    // todo: Дополните код для прохождения теста (Вернуть новый объект, содержащий все свойства двух входных объектов.
-    //  У входных объектов нет повторяющихся свойств).
-    //  !!! Для решения воспользоваться статическим методом класса Object !!!
-    function unionObjects(objPart1, objPart2) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.5
+  // todo: Дополните код для прохождения теста (Вернуть новый объект, содержащий все свойства двух входных объектов.
+  //  У входных объектов нет повторяющихся свойств).
+  //  !!! Для решения воспользоваться статическим методом класса Object !!!
 
-    {
-        const objPart1 = {
-            prop1: 1,
-            prop2: 2,
-        };
-        const objPart2 = {
-            prop3: 3,
-            prop4: 4,
-            prop5: 5,
-        };
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строки ниже - исключение, ее менять не нужно)
-        const objPart1Copy = JSON.parse(JSON.stringify(objPart1));
-        const objPart2Copy = JSON.parse(JSON.stringify(objPart2));
-        const expectedResult = {
-            prop1: 1,
-            prop2: 2,
-            prop3: 3,
-            prop4: 4,
-            prop5: 5,
-        };
+  function unionObjects(objPart1, objPart2) {
+    return Object.assign({}, objPart1, objPart2);
+  }
 
-        const result = unionObjects(objPart1, objPart2);
+  {
+    const objPart1 = {
+      prop1: 1,
+      prop2: 2,
+    };
+    const objPart2 = {
+      prop3: 3,
+      prop4: 4,
+      prop5: 5,
+    };
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строки ниже - исключение, ее менять не нужно)
+    const objPart1Copy = JSON.parse(JSON.stringify(objPart1));
+    const objPart2Copy = JSON.parse(JSON.stringify(objPart2));
+    const expectedResult = {
+      prop1: 1,
+      prop2: 2,
+      prop3: 3,
+      prop4: 4,
+      prop5: 5,
+    };
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-        assert.notEqual(result, objPart1, "Test failed");
-        assert.notEqual(result, objPart2, "Test failed");
-        assert.deepEqual(objPart1, objPart1Copy, "Test failed");
-        assert.deepEqual(objPart2, objPart2Copy, "Test failed");
-    }
-    {
-        const objPart1 = {
-            myProp: 1,
-            anotherProp: '2',
-        };
-        const objPart2 = {
-            additionalProp1: true,
-            additionalProp2: 'prop1',
-            additionalProp3: false,
-        };
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строки ниже - исключение, ее менять не нужно)
-        const objPart1Copy = JSON.parse(JSON.stringify(objPart1));
-        const objPart2Copy = JSON.parse(JSON.stringify(objPart2));
-        const expectedResult = {
-            myProp: 1,
-            anotherProp: '2',
-            additionalProp1: true,
-            additionalProp2: 'prop1',
-            additionalProp3: false,
-        };
+    const result = unionObjects(objPart1, objPart2);
 
-        const result = unionObjects(objPart1, objPart2);
+    assert.deepEqual(result, expectedResult, 'Test failed');
+    assert.notEqual(result, objPart1, 'Test failed');
+    assert.notEqual(result, objPart2, 'Test failed');
+    assert.deepEqual(objPart1, objPart1Copy, 'Test failed');
+    assert.deepEqual(objPart2, objPart2Copy, 'Test failed');
+  }
+  {
+    const objPart1 = {
+      myProp: 1,
+      anotherProp: '2',
+    };
+    const objPart2 = {
+      additionalProp1: true,
+      additionalProp2: 'prop1',
+      additionalProp3: false,
+    };
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строки ниже - исключение, ее менять не нужно)
+    const objPart1Copy = JSON.parse(JSON.stringify(objPart1));
+    const objPart2Copy = JSON.parse(JSON.stringify(objPart2));
+    const expectedResult = {
+      myProp: 1,
+      anotherProp: '2',
+      additionalProp1: true,
+      additionalProp2: 'prop1',
+      additionalProp3: false,
+    };
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-        assert.notEqual(result, objPart1, "Test failed");
-        assert.notEqual(result, objPart2, "Test failed");
-        assert.deepEqual(objPart1, objPart1Copy, "Test failed");
-        assert.deepEqual(objPart2, objPart2Copy, "Test failed");
-    }
+    const result = unionObjects(objPart1, objPart2);
+
+    assert.deepEqual(result, expectedResult, 'Test failed');
+    assert.notEqual(result, objPart1, 'Test failed');
+    assert.notEqual(result, objPart2, 'Test failed');
+    assert.deepEqual(objPart1, objPart1Copy, 'Test failed');
+    assert.deepEqual(objPart2, objPart2Copy, 'Test failed');
+  }
 }
 
 {// TEST 4.6
