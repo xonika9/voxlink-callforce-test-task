@@ -438,50 +438,80 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.9
-    // todo: Написать функцию, которая скопирует объект со всеми публичными свойствами, а также геттерами и сеттерами,
-    //  которые скопируются не по значению, а как геттеры и сеттеры
-    function copyObject1(inputObj) {
-        // Писать код здесь
+{
+  // TEST 4.9
+  // todo: Написать функцию, которая скопирует объект со всеми публичными свойствами, а также геттерами и сеттерами,
+  //  которые скопируются не по значению, а как геттеры и сеттеры
+
+  function copyObject1(inputObj) {
+    const newObj = {};
+    for (const prop in inputObj) {
+      const descriptor = Object.getOwnPropertyDescriptor(inputObj, prop);
+      if (descriptor) {
+        if (descriptor.get || descriptor.set) {
+          Object.defineProperty(newObj, prop, descriptor);
+        } else {
+          newObj[prop] = inputObj[prop];
+        }
+      }
+    }
+    return newObj;
+  }
+
+  {
+    const inputObj = Object.defineProperty(
+      {
+        a: 1,
+        get A() {
+          return this.a + 1;
+        },
+        b: 2,
+        get B() {
+          return this.b + '';
+        },
+        set B(val) {
+          this.b = Number(val) || 0;
+        },
+        c: 3,
+      },
+      'C',
+      {}
+    );
+    // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
+    // (Строка ниже - исключение, ее менять не нужно)
+    const expectedResult = JSON.parse(JSON.stringify(inputObj));
+
+    const result = copyObject1(inputObj);
+
+    assert.notEqual(
+      result,
+      inputObj,
+      'Test failed. Original and result objects is same object'
+    );
+    assert.deepEqual(
+      inputObj,
+      expectedResult,
+      'Test failed. Original object modified'
+    );
+    assert.deepEqual(
+      result,
+      expectedResult,
+      'Test failed. test() returned wrong object'
+    );
+    assert.deepEqual(
+      Object.keys(result).length,
+      Object.keys(expectedResult).length,
+      'Test failed. test() returned wrong object'
+    );
+
+    const valA = result.A;
+
+    try {
+      result.A = valA + 123456789;
+    } catch {
+      // ignore errors
     }
 
-    {
-        const inputObj = Object.defineProperty({
-            a: 1,
-            get A() {
-                return this.a + 1;
-            },
-            b: 2,
-            get B() {
-                return this.b + '';
-            },
-            set B(val) {
-                this.b = Number(val) || 0;
-            },
-            c: 3,
-        }, 'C', {
-
-        });
-        // Использование JSON.parse + JSON.stringify для копирования объектов недопустимо при решении тестового задания
-        // (Строка ниже - исключение, ее менять не нужно)
-        const expectedResult = JSON.parse(JSON.stringify(inputObj));
-
-        const result = copyObject1(inputObj);
-
-        assert.notEqual(result, inputObj, "Test failed. Original and result objects is same object");
-        assert.deepEqual(inputObj, expectedResult, "Test failed. Original object modified");
-        assert.deepEqual(result, expectedResult, "Test failed. test() returned wrong object");
-        assert.deepEqual(Object.keys(result).length, Object.keys(expectedResult).length, "Test failed. test() returned wrong object");
-
-        const valA = result.A;
-
-        try {
-            result.A = valA + 123456789;
-        }
-        catch {
-            // ignore errors
-        }
-
-        assert.deepEqual(result.A, valA, "Test failed. result.A is not readonly");
-    }
+    assert.deepEqual(result.A, valA, 'Test failed. result.A is not readonly');
+  }
 }
