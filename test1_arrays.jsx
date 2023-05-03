@@ -3,28 +3,69 @@
 
 const assert = require("assert").strict;
 
-{// TEST 1.1
-    // todo: Допишите функцию decompressArr(), которая будет раскладывать все подмассивы inputArr (массив массивов чисел И/ИЛИ чисел/строк)
-    function decompressArr(inputArr) {
-        // Писать код здесь
+{
+  // TEST 1.1
+  // todo: Допишите функцию decompressArr(), которая будет раскладывать все подмассивы inputArr (массив массивов чисел И/ИЛИ чисел/строк)
+
+  //   function decompressArr(inputArr) {
+  //     const result = [];
+
+  //     function decompose(arr) {
+  //       for (let i = 0; i < arr.length; i++) {
+  //         const el = arr[i];
+  //         if (Array.isArray(el)) {
+  //           decompose(el);
+  //         } else {
+  //           result.push(el);
+  //         }
+  //       }
+  //     }
+
+  //     decompose(inputArr);
+  //     return result;
+  //   }
+
+  function decompressArr(inputArr) {
+    const result = [];
+
+    function decompose(arr) {
+      for (const el of arr) {
+        if (Array.isArray(el)) {
+          decompose(el);
+        } else {
+          result.push(el);
+        }
+      }
     }
 
-    {
-        const result = decompressArr([[1, [2], 3], [4, 5], [6, [7], 8], 9]);
-        assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], "Test failed");
-    }
-    {
-        const result = decompressArr([[1, 2], 3, [4], [5, 6, 7, 8], 9]);
-        assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], "Test failed");
-    }
-    {
-        const result = decompressArr([1, [2, 3, 4], [5], 6, [7, 8, 9]]);
-        assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], "Test failed");
-    }
-    {
-        const result = decompressArr([[1, [2, 3], 4], [5], [6, [7, 8, `9,10`], 11]]);
-        assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, `9,10`, 11], "Test failed");
-    }
+    decompose(inputArr);
+    return result;
+  }
+
+  {
+    const result = decompressArr([[1, [2], 3], [4, 5], [6, [7], 8], 9]);
+    assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'Test failed');
+  }
+  {
+    const result = decompressArr([[1, 2], 3, [4], [5, 6, 7, 8], 9]);
+    assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'Test failed');
+  }
+  {
+    const result = decompressArr([1, [2, 3, 4], [5], 6, [7, 8, 9]]);
+    assert.deepEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'Test failed');
+  }
+  {
+    const result = decompressArr([
+      [1, [2, 3], 4],
+      [5],
+      [6, [7, 8, `9,10`], 11],
+    ]);
+    assert.deepEqual(
+      result,
+      [1, 2, 3, 4, 5, 6, 7, 8, `9,10`, 11],
+      'Test failed'
+    );
+  }
 }
 
 {// TEST 1.1.X - Дополнительный вопрос
