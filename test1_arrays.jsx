@@ -1,7 +1,7 @@
 // v1.3
 'use strict';
 
-const assert = require("assert").strict;
+const assert = require('assert').strict;
 
 {
   // TEST 1.1
@@ -117,6 +117,7 @@ const assert = require("assert").strict;
     );
   }
 }
+
 {
   // TEST 1.2
   // todo: Нужно создать ДВЕ переменных в функции sumSecondAndFourth, которые будут содержать в себе
@@ -174,24 +175,27 @@ const assert = require("assert").strict;
   }
 }
 
-{// TEST 1.4
-    // todo: Нужно создать ОДНУ переменную в функции getAllAfterThree, которая будет содержать в себе
-    //  все значения массива arr начиная с индекса = 3 и далее ВНЕ зависимости от длины массива
-    //  !!! Для решения воспользоваться деструктуризацией и rest-оператором !!!
-    function getAllAfterThree(arr) {
-        // Писать код здесь
-    }
+{
+  // TEST 1.4
+  // todo: Нужно создать ОДНУ переменную в функции getAllAfterThree, которая будет содержать в себе
+  //  все значения массива arr начиная с индекса = 3 и далее ВНЕ зависимости от длины массива
+  //  !!! Для решения воспользоваться деструктуризацией и rest-оператором !!!
 
-    {
-        const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        const expectedResult = [4, 5, 6, 7, 8, 9];
+  function getAllAfterThree(arr) {
+    const [, , , ...valuesAfterThree] = arr;
+    return valuesAfterThree;
+  }
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-    }
-    {
-        const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7]);
-        const expectedResult = [4, 5, 6, 7];
+  {
+    const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const expectedResult = [4, 5, 6, 7, 8, 9];
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-    }
+    assert.deepEqual(result, expectedResult, 'Test failed');
+  }
+  {
+    const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7]);
+    const expectedResult = [4, 5, 6, 7];
+
+    assert.deepEqual(result, expectedResult, 'Test failed');
+  }
 }
