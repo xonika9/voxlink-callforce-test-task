@@ -149,26 +149,29 @@ const assert = require("assert").strict;
   }
 }
 
-{// TEST 1.3
-    // todo: Нужно создать ОДНУ переменную, которая будет содержать в себе все значения массива arr
-    //  начиная с индекса = 3 и далее ВНЕ зависимости от длины массива
-    //  !!! Для решения воспользоваться методом массива !!!
-    function getAllAfterThree(arr) {
-        // Писать код здесь
-    }
+{
+  // TEST 1.3
+  // todo: Нужно создать ОДНУ переменную, которая будет содержать в себе все значения массива arr
+  //  начиная с индекса = 3 и далее ВНЕ зависимости от длины массива
+  //  !!! Для решения воспользоваться методом массива !!!
 
-    {
-        const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        const expectedResult = [4, 5, 6, 7, 8, 9];
+  function getAllAfterThree(arr) {
+    const valuesAfterThree = arr.slice(3);
+    return valuesAfterThree;
+  }
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-    }
-    {
-        const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7]);
-        const expectedResult = [4, 5, 6, 7];
+  {
+    const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const expectedResult = [4, 5, 6, 7, 8, 9];
 
-        assert.deepEqual(result, expectedResult, "Test failed");
-    }
+    assert.deepEqual(result, expectedResult, 'Test failed');
+  }
+  {
+    const result = getAllAfterThree([1, 2, 3, 4, 5, 6, 7]);
+    const expectedResult = [4, 5, 6, 7];
+
+    assert.deepEqual(result, expectedResult, 'Test failed');
+  }
 }
 
 {// TEST 1.4
