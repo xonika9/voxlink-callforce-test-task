@@ -79,51 +79,58 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.3
-    // todo: Написать код для получения собственных значений объекта obj
-    function getPropValues(obj) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.3
+  // todo: Написать код для получения собственных значений объекта obj
 
-    {
-        const result = getPropValues({
-            prop1: 111,
-            prop2: 222,
-            prop3: 333,
-        });
-        assert.deepEqual(result, [111, 222, 333], "Test failed");
-    }
-    {
-        const result = getPropValues({
-            prop1: 1,
-            customProp: 'MyVal',
-        });
-        assert.deepEqual(result, [1, 'MyVal'], "Test failed");
-    }
-    {
-        const result = getPropValues(Object.defineProperties({
-            myProp: true,
-            anotherProp: false,
-            oneMoreProp: 42,
-            lastProp: 'value',
-            __proto__: {
-                test: 123,
-            },
-        }, {
-            prop1: {
-                value: 123,
-                enumerable: false,
-            },
-            prop3: {
-                value: 42,
-            },
-            prop2: {
-                value: 'value',
-                configurable: false,
-            },
-        }));
-        assert.deepEqual(result, [true, false, 42, 'value'], "Test failed");
-    }
+  function getPropValues(obj) {
+    return Object.keys(obj).map((key) => obj[key]);
+  }
+
+  {
+    const result = getPropValues({
+      prop1: 111,
+      prop2: 222,
+      prop3: 333,
+    });
+    assert.deepEqual(result, [111, 222, 333], 'Test failed');
+  }
+  {
+    const result = getPropValues({
+      prop1: 1,
+      customProp: 'MyVal',
+    });
+    assert.deepEqual(result, [1, 'MyVal'], 'Test failed');
+  }
+  {
+    const result = getPropValues(
+      Object.defineProperties(
+        {
+          myProp: true,
+          anotherProp: false,
+          oneMoreProp: 42,
+          lastProp: 'value',
+          __proto__: {
+            test: 123,
+          },
+        },
+        {
+          prop1: {
+            value: 123,
+            enumerable: false,
+          },
+          prop3: {
+            value: 42,
+          },
+          prop2: {
+            value: 'value',
+            configurable: false,
+          },
+        }
+      )
+    );
+    assert.deepEqual(result, [true, false, 42, 'value'], 'Test failed');
+  }
 }
 
 {// TEST 4.4
