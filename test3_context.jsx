@@ -35,33 +35,34 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 3.2
-    // todo: Исправить функцию callGetter таким образом, чтобы вызываемый внутри getter
-    //  возвращал значение obj.prop путем вызова obj.getProp
-    //  !!! Для решения задания воспользоваться методом функции !!!
-    function callGetter() {
-        const obj = {
-            prop: 777,
-            getProp() {
-                return this.prop;
-            },
-        };
-        const getter = obj.getProp;
+{
+  // TEST 3.2
+  // todo: Исправить функцию callGetter таким образом, чтобы вызываемый внутри getter
+  //  возвращал значение obj.prop путем вызова obj.getProp
+  //  !!! Для решения задания воспользоваться методом функции !!!
+  function callGetter() {
+    const obj = {
+      prop: 777,
+      getProp() {
+        return this.prop;
+      },
+    };
+    const getter = obj.getProp;
 
-        try {
-            assert.equal(typeof getter, 'function', "Test failed");
+    try {
+      assert.equal(typeof getter, 'function', 'Test failed');
 
-            return getter();
-        }
-        catch {
-            return 0;
-        }
+      // Используем метод call, чтобы установить значение this для obj при вызове getter
+      return getter.call(obj);
+    } catch {
+      return 0;
     }
+  }
 
-    {
-        const result = callGetter();
-        assert.equal(result, 777, "Test failed");
-    }
+  {
+    const result = callGetter();
+    assert.equal(result, 777, 'Test failed');
+  }
 }
 
 {// TEST 3.3
