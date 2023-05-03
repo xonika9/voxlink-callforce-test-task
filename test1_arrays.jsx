@@ -117,22 +117,36 @@ const assert = require("assert").strict;
     );
   }
 }
-    function sumSecondAndFourth(arr) {
-        // Писать код здесь
-    }
+{
+  // TEST 1.2
+  // todo: Нужно создать ДВЕ переменных в функции sumSecondAndFourth, которые будут содержать в себе
+  //  значения второго и четвертого элементов массива, и вернуть сумму этих переменных
+  //  !!! Для решения воспользоваться деструктуризацией !!!
+  //  !!! Нельзя обращаться к массиву по индексам !!!
+  //  !!! Нельзя создавать переменные, которые не будут использоваться !!!
 
-    {
-        const result = sumSecondAndFourth([0, 1, 0, 2, 0, 0, 0, 0, 0]);
-        assert.equal(result, 3, "Test failed");
-    }
-    {
-        const result = sumSecondAndFourth([1, 1, 5, 2, 5, 2, 5, 1, 6]);
-        assert.equal(result, 3, "Test failed");
-    }
-    {
-        const result = sumSecondAndFourth([4, 7, 0, 1, 3, 0, 8, 0, 0]);
-        assert.equal(result, 8, "Test failed");
-    }
+  function sumSecondAndFourth(arr) {
+    const [, second, , fourth] = arr;
+    return second + fourth;
+  }
+
+  // Можно использовать деструктуризацию в параметрах функции и сразу вернуть сумму значений
+  //   function sumSecondAndFourth([, second, , fourth]) {
+  //     return second + fourth;
+  //   }
+
+  {
+    const result = sumSecondAndFourth([0, 1, 0, 2, 0, 0, 0, 0, 0]);
+    assert.equal(result, 3, 'Test failed');
+  }
+  {
+    const result = sumSecondAndFourth([1, 1, 5, 2, 5, 2, 5, 1, 6]);
+    assert.equal(result, 3, 'Test failed');
+  }
+  {
+    const result = sumSecondAndFourth([4, 7, 0, 1, 3, 0, 8, 0, 0]);
+    assert.equal(result, 8, 'Test failed');
+  }
 }
 
 {// TEST 1.3
