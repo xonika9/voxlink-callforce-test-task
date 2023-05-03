@@ -54,27 +54,29 @@ const assert = require('assert').strict;
   }
 }
 
-{// TEST 4.2
-    // todo: Написать код для получения собственных ключей объекта obj, но без свойства skip_this_prop.
-    function getPropNames(obj) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.2
+  // todo: Написать код для получения собственных ключей объекта obj, но без свойства skip_this_prop.
 
-    {
-        const obj = {
-            prop1: 111,
-            prop2: 222,
-            prop3: 333,
-            skip_this_prop: 444,
-            __proto__: {
-                nonObjectProp: 'test',
-            },
-        };
-        const result = getPropNames(obj);
+  function getPropNames(obj) {
+    return Object.keys(obj).filter((key) => key !== 'skip_this_prop');
+  }
 
-        assert.deepEqual(result, ['prop1', 'prop2', 'prop3'], "Test failed");
-        assert.deepEqual(obj.skip_this_prop, 444, "Test failed");
-    }
+  {
+    const obj = {
+      prop1: 111,
+      prop2: 222,
+      prop3: 333,
+      skip_this_prop: 444,
+      __proto__: {
+        nonObjectProp: 'test',
+      },
+    };
+    const result = getPropNames(obj);
+
+    assert.deepEqual(result, ['prop1', 'prop2', 'prop3'], 'Test failed');
+    assert.deepEqual(obj.skip_this_prop, 444, 'Test failed');
+  }
 }
 
 {// TEST 4.3
