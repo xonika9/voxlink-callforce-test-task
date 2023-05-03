@@ -1,42 +1,57 @@
 // v1.4
 'use strict';
 
-const assert = require("assert").strict;
+const assert = require('assert').strict;
 
-{// TEST 4.1
-    // todo: Написать код для получения собственных ключей объекта obj
-    function getPropNames(obj) {
-        // Писать код здесь
-    }
+{
+  // TEST 4.1
+  // todo: Написать код для получения собственных ключей объекта obj
 
-    {
-        const result = getPropNames({
-            prop1: 111,
-            prop2: 222,
-            prop3: 333,
-        });
-        assert.deepEqual(result, ['prop1', 'prop2', 'prop3'], "Test failed");
-    }
-    {
-        const result = getPropNames({
-            prop1: 111,
-            customProp: 222,
-        });
-        assert.deepEqual(result, ['prop1', 'customProp'], "Test failed");
-    }
-    {
-        const result = getPropNames(Object.setPrototypeOf(Object.defineProperty({
+  function getPropNames(obj) {
+    return Object.keys(obj);
+  }
+
+  {
+    const result = getPropNames({
+      prop1: 111,
+      prop2: 222,
+      prop3: 333,
+    });
+    assert.deepEqual(result, ['prop1', 'prop2', 'prop3'], 'Test failed');
+  }
+  {
+    const result = getPropNames({
+      prop1: 111,
+      customProp: 222,
+    });
+    assert.deepEqual(result, ['prop1', 'customProp'], 'Test failed');
+  }
+  {
+    const result = getPropNames(
+      Object.setPrototypeOf(
+        Object.defineProperty(
+          {
             myProp: 111,
             anotherProp: 222,
             oneMoreProp: 333,
-        }, 'lastProp', {
+          },
+          'lastProp',
+          {
             value: 333,
             enumerable: true,
-        }), {
-            nonObjectProp: 'test',
-        }));
-        assert.deepEqual(result, ['myProp', 'anotherProp', 'oneMoreProp', 'lastProp'], "Test failed");
-    }
+          }
+        ),
+        {
+          nonObjectProp: 'test',
+        }
+      )
+    );
+    assert.deepEqual(
+      result,
+      ['myProp', 'anotherProp', 'oneMoreProp', 'lastProp'],
+      'Test failed'
+    );
+  }
 }
 
 {// TEST 4.2
