@@ -52,22 +52,38 @@ const sleep500 = makeSleep('5', 500);
   });
 }
 
-{// TEST 2.2
-    // todo: Вызовите по очереди методы sleep500 -> sleep200 -> sleep100, дожидаясь выполнения каждого перед запуском следующего метода.
-    //  Обратите внимание, что sleepOneByOnePromised должна, в результате, составить строковое значение.
-    //  !!! Для решения применить Promise-подход (т.е. без async/await) !!!
-    function sleepOneByOnePromised() {
-        // Писать код здесь
-    }
+{
+  // TEST 2.2
+  // todo: Вызовите по очереди методы sleep500 -> sleep200 -> sleep100, дожидаясь выполнения каждого перед запуском следующего метода.
+  //  Обратите внимание, что sleepOneByOnePromised должна, в результате, составить строковое значение.
+  //  !!! Для решения применить Promise-подход (т.е. без async/await) !!!
 
-    const start = Date.now();
+  function sleepOneByOnePromised() {
+    let orderString = '';
 
-    sleepOneByOnePromised().then((orderString) => {
-        const timeSpent = Date.now() - start;
+    return sleep500()
+      .then((result) => {
+        orderString += result;
+        return sleep200();
+      })
+      .then((result) => {
+        orderString += result;
+        return sleep100();
+      })
+      .then((result) => {
+        orderString += result;
+        return orderString;
+      });
+  }
 
-        assert.equal(timeSpent >= 800, true, "Test failed. Too fast");
-        assert.equal(orderString, "521", "Test failed. Wrong order");
-    });
+  const start = Date.now();
+
+  sleepOneByOnePromised().then((orderString) => {
+    const timeSpent = Date.now() - start;
+
+    assert.equal(timeSpent >= 800, true, 'Test failed. Too fast');
+    assert.equal(orderString, '521', 'Test failed. Wrong order');
+  });
 }
 
 {// TEST 2.3
