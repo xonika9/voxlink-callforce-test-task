@@ -86,22 +86,44 @@ const sleep500 = makeSleep('5', 500);
   });
 }
 
-{// TEST 2.3
-    // Строку ниже нельзя изменять
-    const orderedSleeps = [sleep500, sleep200, sleep100, sleep500, sleep200, sleep100, sleep500, sleep200, sleep100];
+{
+  // TEST 2.3
+  // Строку ниже нельзя изменять
+  const orderedSleeps = [
+    sleep500,
+    sleep200,
+    sleep100,
+    sleep500,
+    sleep200,
+    sleep100,
+    sleep500,
+    sleep200,
+    sleep100,
+  ];
 
-    // todo: Воспользовавшись циклом, переберите массив orderedSleeps таким образом, чтобы каждый метод дожидался
-    //  завершения выполнения предыдущего (первый метод ничего дожидаться не должен) и полученное значение конкатенировал
-    //  с полученным значением от предыдущего промиса (в итоге нужно собрать строку из кол-ва символов == orderedSleeps.length).
-    //  Функция sleepOneByOne() завершается, когда выполнился самый последний метод в orderedSleeps.
-    // !!! sleepOneByOne() не должна иметь модификатор async и должна возвращать инстанс класса Promise !!!
-    function sleepOneByOne() {
-        // Писать код здесь
+  // todo: Воспользовавшись циклом, переберите массив orderedSleeps таким образом, чтобы каждый метод дожидался
+  //  завершения выполнения предыдущего (первый метод ничего дожидаться не должен) и полученное значение конкатенировал
+  //  с полученным значением от предыдущего промиса (в итоге нужно собрать строку из кол-ва символов == orderedSleeps.length).
+  //  Функция sleepOneByOne() завершается, когда выполнился самый последний метод в orderedSleeps.
+  // !!! sleepOneByOne() не должна иметь модификатор async и должна возвращать инстанс класса Promise !!!
+
+  function sleepOneByOne() {
+    let orderString = '';
+    let currentPromise = Promise.resolve();
+
+    for (const sleep of orderedSleeps) {
+      currentPromise = currentPromise.then(sleep).then((result) => {
+        orderString += result;
+        return orderString;
+      });
     }
 
-    sleepOneByOne().then((orderString) => {
-        assert.equal(orderString, "521521521", "Test failed. Wrong order");
-    });
+    return currentPromise;
+  }
+
+  sleepOneByOne().then((orderString) => {
+    assert.equal(orderString, '521521521', 'Test failed. Wrong order');
+  });
 }
 
 {// TEST 2.4
