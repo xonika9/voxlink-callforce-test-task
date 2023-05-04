@@ -1,17 +1,12 @@
 const bannedWords = ['123', '321'];
 
-function validateText(text) {
+const validateText = (text) => {
   if (text === '') {
     return [text];
   }
+
   const regex = new RegExp(bannedWords.join('|'), 'g');
-  // console.log('regex', regex);
-
-  const parts = text.split(regex);
-  // console.log('parts', parts);
-
-  const bannedParts = text.match(regex) || [];
-  // console.log('bannedParts', bannedParts);
+  const [parts, bannedParts] = [text.split(regex), text.match(regex) || []];
 
   return parts
     .flatMap((part, i) => [
@@ -21,7 +16,7 @@ function validateText(text) {
         : []),
     ])
     .filter(Boolean);
-}
+};
 
 module.exports = {
   validateText,

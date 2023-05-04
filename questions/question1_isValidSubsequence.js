@@ -2,13 +2,24 @@ function isValidSubsequence(array, sequence) {
   if (sequence.length === 0) {
     return false;
   }
-  let seqIndex = 0;
-  for (let i = 0; i < array.length && seqIndex < sequence.length; i++) {
-    if (array[i] === sequence[seqIndex]) {
-      seqIndex++;
+
+  const findSequenceIndex = (arr, seq) => {
+    let seqIndex = 0;
+
+    for (const value of arr) {
+      if (value === seq[seqIndex]) {
+        seqIndex++;
+      }
+
+      if (seqIndex === seq.length) {
+        break;
+      }
     }
-  }
-  return seqIndex === sequence.length;
+
+    return seqIndex;
+  };
+
+  return findSequenceIndex(array, sequence) === sequence.length;
 }
 
 module.exports = {
