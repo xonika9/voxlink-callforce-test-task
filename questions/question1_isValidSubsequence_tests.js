@@ -124,7 +124,6 @@ const { isValidSubsequence } = require('./question1_isValidSubsequence');
   },
 ].forEach((test) => {
   const { result = true } = test;
-  // console.log(result);
 
   if (isValidSubsequence(test.array, test.sequence) !== result) {
     throw new Error('Test failed');

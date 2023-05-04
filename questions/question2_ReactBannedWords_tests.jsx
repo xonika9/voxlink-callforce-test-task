@@ -36,15 +36,9 @@ const { validateText } = require('./question2_ReactBannedWords');
   },
 ].forEach((test) => {
   const { text, components } = test;
-  // console.log('В функцию передается text:', text);
-  // console.log('Должно получиться components:', components);
   const result = validateText(text);
-  // console.log('Что получилось result:', result);
 
   if (components.join('|') !== result.join('|')) {
-    // console.log('ТЕСТ НЕ ПРОШЕЛ \n');
     throw new Error('Test failed');
   }
-
-  // console.log('ТЕСТ ПРОШЕЛ \n');
 });
