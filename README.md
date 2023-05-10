@@ -1,4 +1,4 @@
-# Forkway Test Task
+# VoxLink Test Task
 
 Тестовое задание на позицию Frontend-разработчика в компанию VoxLink
 
